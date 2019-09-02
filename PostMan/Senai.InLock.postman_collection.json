@@ -1,0 +1,245 @@
+{
+	"info": {
+		"_postman_id": "be4c96bc-be33-42c4-8ce4-9b788e54c9e1",
+		"name": "Senai.InLock",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Usuarios.Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"cliente@cliente.com\",\n\t\"senha\":\"CLIENTE\"\n}"
+						},
+						"url": {
+							"raw": "{{ip}}:5000/api/login",
+							"host": [
+								"{{ip}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Jogos",
+			"item": [
+				{
+					"name": "Jogos.Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ip}}:5000/api/jogos",
+							"host": [
+								"{{ip}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"jogos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jogos.BuscarPorId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ip}}:5000/api/jogos/1",
+							"host": [
+								"{{ip}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"jogos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jogos.Cadastrar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeJogo\": \"Diablo 4\",\r\n    \"descricao\": \"um jogo que funciona bem para testar API's\",\r\n    \"dataLancamento\": \"2019-09-05\",\r\n    \"valor\": 1.00,\r\n    \"estudioId\": 1\r\n}"
+						},
+						"url": {
+							"raw": "{{ip}}:5000/api/jogos",
+							"host": [
+								"{{ip}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"jogos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jogos.Atualizar",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nomeJogo\": \"Diablo 4,5\"\n}"
+						},
+						"url": {
+							"raw": "{{ip}}:5000/api/jogos/7",
+							"host": [
+								"{{ip}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"jogos",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Jogos.Deletar",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{ip}}:5000/api/jogos/8",
+							"host": [
+								"{{ip}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"jogos",
+								"8"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estudios",
+			"item": [
+				{
+					"name": "Estudios.Listar",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ip}}:5000/api/estudios",
+							"host": [
+								"{{ip}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"estudios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Estudios.BuscarPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ip}}:5000/api/estudios/2",
+							"host": [
+								"{{ip}}"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"estudios",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "01d528f6-81be-4813-987d-f831422f0035",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "b3403874-babe-427a-858f-1f464d1f5df7",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

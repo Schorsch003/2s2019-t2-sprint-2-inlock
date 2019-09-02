@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Senai.InLock.WebApi {
     public class Startup {
@@ -24,6 +25,24 @@ namespace Senai.InLock.WebApi {
                 })
             );
 
+
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = "JwtBearer";
+                options.DefaultChallengeScheme = "JwtBearer";
+            }
+
+                ).AddJwtBearer("JwtBearer" , options => {
+                    options.TokenValidationParameters = new TokenValidationParameters {
+                        ValidateIssuer = true ,
+                        ValidateAudience = true ,
+                        ValidateLifetime = true ,
+                        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("inlock-chave-autenticacao")) ,
+                        ClockSkew = TimeSpan.FromHours(2),
+                        ValidIssuer = "InLock.WebApi" ,
+                        ValidAudience = "InLock.WebApi"
+                    };
+                });
+
             services.AddCors(options => {
                 options.AddPolicy("CorsPolicy" , builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
@@ -34,6 +53,7 @@ namespace Senai.InLock.WebApi {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseAuthentication();
             app.UseCors("CorsPolicy");
             app.UseMvc();
             app.UseSwagger();

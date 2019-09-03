@@ -71,5 +71,21 @@ namespace Senai.InLock.WebApi.Repositories {
                 return ctx.Estudios.Where(x => x.UsuarioId == idUsuario).ToList();
             }
         }
+
+        public List<Estudios> ListarEstudiosComUsuarios () {
+            using (InLockContext ctx = new InLockContext()) {
+                var usuarios = ctx.Estudios.Include(x => x.Usuario).ToList();
+                foreach(var item in usuarios) {
+                    item.Usuario.Senha = null;
+                }
+                return usuarios;
+            }
+        }
+
+        public List<Estudios> ListarEstudiosRecentes () {
+            using (InLockContext ctx = new InLockContext()) {
+                 return ctx.Estudios.Where(x => (DateTime.Today- x.DataCriacao.Date).TotalDays < 10).ToList();
+            }
+        }
     }
 }

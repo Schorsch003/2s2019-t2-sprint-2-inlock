@@ -84,8 +84,17 @@ namespace Senai.InLock.WebApi.Controllers {
         public IEnumerable<Estudios> EstudiosAdicionadosPorAdmin () {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             var id = Convert.ToInt32(identity.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value);
-
             return estudioRepository.EstudiosInseridosPor(id);
+        }
+
+        [HttpGet("estudioseusuario")]
+        public IActionResult EstudiosEUsuarioDeInsercao () {
+            return Ok(estudioRepository.ListarEstudiosComUsuarios());
+        }
+
+        [HttpGet("estudiosrecentes")]
+        public IEnumerable<Estudios> EstudiosRecentes () {
+            return estudioRepository.ListarEstudiosRecentes();
         }
     }
 }

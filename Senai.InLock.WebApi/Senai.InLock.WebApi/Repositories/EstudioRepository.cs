@@ -1,4 +1,5 @@
-﻿using Senai.InLock.WebApi.Domains;
+﻿using Microsoft.EntityFrameworkCore;
+using Senai.InLock.WebApi.Domains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Senai.InLock.WebApi.Repositories {
 
         public List<Estudios> ListarEstudios () {
             using (InLockContext ctx = new InLockContext()) {
-                return ctx.Estudios.ToList();
+                return ctx.Estudios.Include(x => x.Jogos).ToList();
             }
         }
 
@@ -26,16 +27,16 @@ namespace Senai.InLock.WebApi.Repositories {
             }
         }
 
-        public void Atualizar(int id, Estudios estudio) {
+        public void Atualizar (int id , Estudios estudio) {
             using (InLockContext ctx = new InLockContext()) {
                 var studio = BuscarPorId(id);
-                if(estudio.NomeEstudio != null) {
+                if (estudio.NomeEstudio != null) {
                     studio.NomeEstudio = estudio.NomeEstudio;
                 }
-                if(estudio.PaisOrigem != null) {
+                if (estudio.PaisOrigem != null) {
                     studio.PaisOrigem = estudio.PaisOrigem;
                 }
-                if(estudio.DataCriacao != null) {
+                if (estudio.DataCriacao != null) {
                     studio.DataCriacao = estudio.DataCriacao;
                 }
                 ctx.Update(studio);
@@ -43,11 +44,31 @@ namespace Senai.InLock.WebApi.Repositories {
             }
         }
 
-        public void RemoverEstudio(int id) {
+        public void RemoverEstudio (int id) {
             using (InLockContext ctx = new InLockContext()) {
                 var estudio = BuscarPorId(id);
                 ctx.Estudios.Remove(estudio);
                 ctx.SaveChanges();
+            }
+        }
+
+        public Estudios BuscarPorNome (string nome) {
+            using (InLockContext ctx = new InLockContext()) {
+                var estudio = nome.Replace('_' , ' ').ToUpper();
+                return ctx.Estudios.Include(x => x.Jogos).FirstOrDefault(x => x.NomeEstudio.ToUpper() == estudio);
+            }
+        }
+
+        public List<Estudios> BuscarPorPais(string pais) {
+            using(InLockContext ctx = new InLockContext()) {
+                var a = ctx.Estudios.Include(x => x.Jogos).Where(x => x.PaisOrigem.Replace('ã','a').ToUpper() == pais.ToUpper()).ToList();
+                return a;
+            }
+        }
+
+        public List<Estudios> EstudiosInseridosPor (int idUsuario) {
+            using (InLockContext ctx = new InLockContext()) {
+                return ctx.Estudios.Where(x => x.UsuarioId == idUsuario).ToList();
             }
         }
     }

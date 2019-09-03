@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -64,6 +66,26 @@ namespace Senai.InLock.WebApi.Controllers {
             }catch(Exception ex) {
                 return BadRequest(new { message = "Erro: " + ex.Message });
             }
+        }
+
+        [Authorize]
+        [HttpGet("buscarnome/{nome}")]
+        public IActionResult BuscarPorNome(string nome) {
+            return Ok(estudioRepository.BuscarPorNome(nome));
+        }
+
+        [HttpGet("buscarpais/{pais}")]
+        public IEnumerable<Estudios> BuscarPorPais(string pais) {
+            return estudioRepository.BuscarPorPais(pais);
+        }
+
+        [Authorize(Roles = "ADMINISTRADOR")]
+        [HttpGet("estudiosinseridos")]
+        public IEnumerable<Estudios> EstudiosAdicionadosPorAdmin () {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            var id = Convert.ToInt32(identity.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti).Value);
+
+            return estudioRepository.EstudiosInseridosPor(id);
         }
     }
 }

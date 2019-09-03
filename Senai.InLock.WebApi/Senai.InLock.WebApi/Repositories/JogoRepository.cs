@@ -55,5 +55,24 @@ namespace Senai.InLock.WebApi.Repositories {
             }
         }
 
+        public List<Jogos> JogosMaisCaros (int qntd) {
+            using (InLockContext ctx = new InLockContext()) {
+                return ctx.Jogos.OrderByDescending(x => x.Valor).Take(5).ToList();
+            }
+        }
+
+        public List<Jogos> MaisRecentes () {
+            using (InLockContext ctx = new InLockContext()) {
+                return ctx.Jogos.OrderByDescending(x => x.DataLancamento).ToList();
+            }
+        }
+
+        public Jogos BuscarPorNome(string nome) {
+            using (InLockContext ctx = new InLockContext()) {
+                var a = nome.Replace('_',' ').ToUpper();
+                var jogo = ctx.Jogos.FirstOrDefault(x => x.NomeJogo.ToUpper() == a);
+                return jogo;
+            }
+        }
     }
 }

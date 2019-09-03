@@ -66,8 +66,23 @@ namespace Senai.InLock.WebApi.Controllers {
             }catch(Exception ex) {
                 return BadRequest(new { message = "Erro: " + ex.Message });
             }
-
         }
 
+        [Authorize]
+        [HttpGet("TopPrices")]
+        public IEnumerable<Jogos> MaisCaros () {
+            return jogoRepository.JogosMaisCaros(5);
+        }
+
+        [Authorize]
+        [HttpGet("JogosRecentes")]
+        public IEnumerable<Jogos> JogosRecentes () {
+            return jogoRepository.MaisRecentes();
+        }
+
+        [HttpGet("buscarpornome/{nome}")]
+        public IActionResult BuscarPorNome(string nome) {
+            return Ok(jogoRepository.BuscarPorNome(nome));
+        }
     }
 }
